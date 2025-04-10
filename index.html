@@ -552,31 +552,38 @@
 </footer>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
-    (function(){
-        emailjs.init("M6M8mdG3tQovCkeIT"); // ✅ Your User ID
-    })();
-
-    // JS EmailJS handler
-    const contactForm = document.getElementById('contactForm');
-    contactForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      emailjs.sendForm(
-        'service_4g3yyqn',       // ✅ Your Service ID
-        'template_o5j6lpb',      // ✅ Your Template ID
-        this,
-        'M6M8mdG3tQovCkeIT'      // ✅ Your User ID again (redundant but fine)
-      ).then(
-        () => {
-          alert("Message sent successfully!");
-          contactForm.reset();
-        },
-        (error) => {
-          console.error("FAILED...", error);
-          alert("Failed to send message. Please try again.");
-        }
-      );
-    });
+    (function () {
+        emailjs.init("M6M8mdG3tQovCkeIT");
+      })();
+      
+      const contactForm = document.getElementById('contactForm');
+      
+      if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+      
+          // Send form data to YOUR inbox
+          emailjs.sendForm('service_4g3yyqn', 'template_o5j6lpb', this)
+            .then(() => {
+              console.log("✅ Message sent to your inbox");
+      
+              // Send auto-reply to sender
+              emailjs.sendForm('service_4g3yyqn', 'template_4d4dkt1', this)
+                .then(() => {
+                  console.log("✅ Auto-reply sent");
+                  alert("✅ Thank you! Your message was sent, and a confirmation email was sent to you.");
+                  contactForm.reset();
+                }, (autoReplyErr) => {
+                  console.error("❌ Auto-reply error:", autoReplyErr);
+                });
+      
+            }, (err) => {
+              console.error("❌ Email send error:", err);
+              alert("❌ Failed to send your message. Please try again later.");
+            });
+        });
+      }
+      
   </script>
 </body>
 </html>
