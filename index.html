@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./style.css">
     <script src="./script.js" defer></script>
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 
 </head>
 <body>
@@ -551,4 +550,33 @@
       </div>
   </div>
 </footer>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function(){
+        emailjs.init("M6M8mdG3tQovCkeIT"); // ✅ Your User ID
+    })();
 
+    // JS EmailJS handler
+    const contactForm = document.getElementById('contactForm');
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      emailjs.sendForm(
+        'service_4g3yyqn',       // ✅ Your Service ID
+        'template_o5j6lpb',      // ✅ Your Template ID
+        this,
+        'M6M8mdG3tQovCkeIT'      // ✅ Your User ID again (redundant but fine)
+      ).then(
+        () => {
+          alert("Message sent successfully!");
+          contactForm.reset();
+        },
+        (error) => {
+          console.error("FAILED...", error);
+          alert("Failed to send message. Please try again.");
+        }
+      );
+    });
+  </script>
+</body>
+</html>
